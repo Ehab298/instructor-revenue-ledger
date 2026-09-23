@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,10 +33,9 @@ class User extends Authenticatable
         ];
     }
 
-
-    public function courses(): BelongsToMany
+    public function courses(): HasMany
     {
-        return $this->belongsToMany(Course::class, 'course_user');
+        return $this->hasMany(Course::class, 'instructor_id');
     }
 
     public function payouts(): HasMany
@@ -49,7 +47,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(LedgerTransaction::class, 'instructor_id');
     }
-
 
     public function subscriptions(): HasMany
     {

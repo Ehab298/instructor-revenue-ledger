@@ -8,9 +8,7 @@ use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
 {
-    /**
-     * Seed the courses table and link instructors via the course_user pivot.
-     */
+
     public function run(): void
     {
         $titles = [
@@ -32,14 +30,11 @@ class CourseSeeder extends Seeder
             return;
         }
 
-        $maxInstructorsPerCourse = min(2, $instructorIds->count());
-
         foreach ($titles as $title) {
-            $course = Course::factory()->create(['title' => $title]);
-
-            $course->instructors()->attach(
-                $instructorIds->random(rand(1, $maxInstructorsPerCourse))->all()
-            );
+            Course::factory()->create([
+                'title' => $title,
+                'instructor_id' => $instructorIds->random(),
+            ]);
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -37,6 +38,7 @@ class CourseFactory extends Factory
 
         return [
             'title' => fake()->unique()->randomElement($titles),
+            'instructor_id' => User::factory()->instructor(),
         ];
     }
 }

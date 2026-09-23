@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('instructor_id')->constrained('users')->restrictOnDelete();
 
-            $table->bigInteger('amount');
+            $table->bigInteger('amount')->unsigned();
 
-            $table->enum('type', ['revenue_share', 'payout', 'refund']);
+            $table->enum('type', ['earning', 'payout', 'refund']);
             $table->nullableMorphs('reference');
-
-            $table->string('idempotency_key')->unique();
+            $table->enum('status', ['New', 'Completed'])->default('New');
 
             $table->timestamps();
         });

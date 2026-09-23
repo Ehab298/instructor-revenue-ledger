@@ -15,10 +15,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained('users')->restrictOnDelete();
             $table->enum('plan', ['monthly', 'quarterly', 'annual']);
-            $table->bigInteger('amount_paid'); 
+            $table->bigInteger('amount_paid')->unsigned();
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
             $table->timestamps();
+
+            // "Active" is derived from ends_at > now; the service serializes
+            // concurrent subscriptions per student with a row lock.
+            $table->index(['student_id', 'ends_at']);
         });
     }
 
