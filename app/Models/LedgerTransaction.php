@@ -15,13 +15,13 @@ class LedgerTransaction extends Model
         'instructor_id',
         'amount',
         'type',
-        'idempotency_key',
+        'status',
     ];
 
     protected function casts(): array
     {
         return [
-            'amount' => 'integer', 
+            'amount' => 'integer',
         ];
     }
 
@@ -29,7 +29,6 @@ class LedgerTransaction extends Model
     {
         return $this->belongsTo(User::class, 'instructor_id');
     }
-
 
     public function reference(): MorphTo
     {
