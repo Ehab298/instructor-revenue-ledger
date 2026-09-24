@@ -3,16 +3,18 @@
 namespace App\Services\Subscriptions;
 
 use App\Enums\SubscriptionPlan;
-use App\Models\Course;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Services\Revenue\AllocateSubscriptionEarnings;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
-
 class CreateSubscription
 {
+    public function __construct(
+        private readonly AllocateSubscriptionEarnings $allocateEarnings,
+    ) {}
 
     public function __invoke(User $student, Collection $courses, SubscriptionPlan $plan): Subscription
     {
@@ -35,6 +37,8 @@ class CreateSubscription
             ]);
 
             $subscription->courses()->sync($courses->pluck('id')->all());
+
+            ($this->allocateEarnings)($subscription);
 
             return $subscription;
         });

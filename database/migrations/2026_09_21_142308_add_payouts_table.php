@@ -14,8 +14,14 @@ return new class extends Migration
         Schema::create('payouts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('instructor_id')->constrained('users')->restrictOnDelete();
+
             $table->bigInteger('amount')->unsigned();
-            $table->enum('status', ['pending', 'success', 'failed', 'timeout'])->default('pending');
+
+            $table->enum('status', ['pending', 'processing', 'success', 'failed', 'timeout'])->default('pending');
+
+            $table->string('provider_reference')->nullable()->unique();
+            $table->unsignedInteger('attempts')->default(0);
+
             $table->timestamps();
         });
     }
